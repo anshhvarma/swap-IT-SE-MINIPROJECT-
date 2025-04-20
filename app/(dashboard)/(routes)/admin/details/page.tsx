@@ -3,7 +3,6 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import AdminDetailContentPage from "./_components/admin-details";
-import { Button } from "@/components/ui/button";
 
 const AdminDetailsPage = async () => {
   const { userId } = await auth();
@@ -86,11 +85,6 @@ const AdminDetailsPage = async () => {
 
   return (
     <div className="p-6 h-full">
-        <Link href={`/admin/details/${admin.id}`}>
-        <Button>
-          Edit Profile
-        </Button>
-        </Link>
       <div className="p-10 pt-16">
         <AdminDetailContentPage
           products={products}
