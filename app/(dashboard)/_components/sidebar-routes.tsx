@@ -2,7 +2,7 @@
 import { Compass, Home, List, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import SidebarRouteItems from "./sidebar-route-items";
-import Box from "@/app/components/box";
+import Box from "@/components/box";
 import { Separator } from "@/components/ui/separator";
 import DateFilter from "./date-filter";
 import CheckBoxContainer from "./check-box-container";

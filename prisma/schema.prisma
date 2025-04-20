@@ -37,6 +37,7 @@ model Product{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String
   title String
+  whatsapp_number String?
   short_description String?
   imageUrl String?
   isPublished Boolean @default(false)
