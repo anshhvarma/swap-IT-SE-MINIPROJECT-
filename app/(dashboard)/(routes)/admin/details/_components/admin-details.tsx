@@ -1,6 +1,6 @@
 "use client"
 import { Admin, Product } from "@prisma/client";
-import React, { useState } from "react";
+import React from "react";
 
 interface AdminDetailContentPageProps {
 userId : string | null;
@@ -9,7 +9,7 @@ products : Product[]
 }
 
 
-const AdminDetailContentPage = ({userId, admin, products}: AdminDetailContentPageProps) => {
+const AdminDetailContentPage = ({admin}: AdminDetailContentPageProps) => {
 
 
 

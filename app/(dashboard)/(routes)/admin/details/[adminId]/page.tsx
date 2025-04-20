@@ -2,7 +2,7 @@
 import { IconBadge } from "@/app/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft, LayoutDashboard, Network } from "lucide-react";
+import { ArrowLeft, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import AdminCollegeName from "./_components/admin-college-form";
@@ -48,7 +48,7 @@ const AdminEditPage = async ({params}: {params: {adminId: string}}) => {
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
 
-  const isComplete = requiredFields.every(Boolean);
+  requiredFields.every(Boolean);
 
   return (
     <div className="p-6">

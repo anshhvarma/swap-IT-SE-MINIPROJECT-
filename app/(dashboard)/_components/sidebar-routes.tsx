@@ -98,6 +98,9 @@ const experienceData = [
   },
 ];
 
+// Define proper types for filter values
+type FilterValue = string;
+
 const SidebarRoutes = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -106,7 +109,8 @@ const SidebarRoutes = () => {
   const isSearchPage = pathname?.startsWith("/search");
 
   const routes = isAdminPage ? adminRoutes : guestRoutes;
-  const handleShiftTimingChange = (shiftTimings: any[]) => {
+  
+  const handleShiftTimingChange = (shiftTimings: FilterValue[]) => {
     const currentQueryParams = qs.parseUrl(window.location.href).query;
     const updatedQueryParams = {
       ...currentQueryParams,
@@ -114,7 +118,7 @@ const SidebarRoutes = () => {
     };
     const url = qs.stringifyUrl(
       {
-        url: pathname,
+        url: pathname || '',
         query: updatedQueryParams,
       },
       {
@@ -126,7 +130,7 @@ const SidebarRoutes = () => {
     router.push(url);
   };
 
-  const handleWorkingMode = (workingModes: any[]) => {
+  const handleWorkingMode = (workingModes: FilterValue[]) => {
     const currentQueryParams = qs.parseUrl(window.location.href).query;
     const updatedQueryParams = {
       ...currentQueryParams,
@@ -134,7 +138,7 @@ const SidebarRoutes = () => {
     };
     const url = qs.stringifyUrl(
       {
-        url: pathname,
+        url: pathname || '',
         query: updatedQueryParams,
       },
       {
@@ -146,7 +150,7 @@ const SidebarRoutes = () => {
     router.push(url);
   };
 
-  const handleExperience = (experiences: any[]) => {
+  const handleExperience = (experiences: FilterValue[]) => {
     const currentQueryParams = qs.parseUrl(window.location.href).query;
     const updatedQueryParams = {
       ...currentQueryParams,
@@ -155,7 +159,7 @@ const SidebarRoutes = () => {
     
     const url = qs.stringifyUrl(
       {
-        url: pathname,
+        url: pathname || '',
         query: updatedQueryParams,
       },
       {
@@ -166,6 +170,7 @@ const SidebarRoutes = () => {
     );
     router.push(url);
   };
+  
   return (
     <div className="flex flex-col w-full">
       {routes.map((route) => (
