@@ -39,62 +39,8 @@ const guestRoutes = [
   },
   {
     icons: User,
-    label: "Profile",
-    href: "/profile",
-  },
-  {
-    icons: User,
-    label: "Saved Jobs",
-    href: "/savedJobs",
-  },
-];
-
-const shiftTimingsData = [
-  {
-    value: "full-time",
-    label: "Full Time",
-  },
-  {
-    value: "part-time",
-    label: "Part Time",
-  },
-  {
-    value: "contract",
-    label: "Contract",
-  },
-];
-
-const workingModesData = [
-  {
-    value: "remote",
-    label: "Remote",
-  },
-  {
-    value: "hybrid",
-    label: "Hybrid",
-  },
-  {
-    value: "office",
-    label: "Office",
-  },
-];
-
-const experienceData = [
-  {
-    value: "0",
-    label: "Fresher",
-  },
-  {
-    value: "2",
-    label: "0-2 years",
-  },
-  {
-    value: "3",
-    label: "2-4 years",
-  },
-  {
-    value: "5",
-    label: "5+ years",
+    label: "Saved Products",
+    href: "/savedproducts",
   },
 ];
 
@@ -192,39 +138,6 @@ const SidebarRoutes = () => {
             Filters
           </h2>
           <DateFilter />
-
-          <Separator />
-
-          {/* Working Schedule */}
-          <h2 className="text-lg text-muted-foreground tracking-wide">
-            Working Schedule
-          </h2>
-          <CheckBoxContainer
-            data={shiftTimingsData}
-            onChange={handleShiftTimingChange}
-          />
-
-          <Separator />
-
-          {/* working  mode */}
-          <h2 className="text-lg text-muted-foreground tracking-wide">
-            Working Mode
-          </h2>
-          <CheckBoxContainer
-            data={workingModesData}
-            onChange={handleWorkingMode}
-          />
-
-          <Separator />
-
-          {/* Experience   */}
-          <h2 className="text-lg text-muted-foreground tracking-wide">
-            Experience
-          </h2>
-          <CheckBoxContainer
-            data={experienceData}
-            onChange={handleExperience}
-          />
         </Box>
       )}
     </div>

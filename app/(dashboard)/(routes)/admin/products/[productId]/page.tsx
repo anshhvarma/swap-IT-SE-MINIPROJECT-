@@ -19,6 +19,7 @@ import CategoryForm from "./_components/category-form";
 import TagsForm from "./_components/tags-form";
 import AdminForm from "./_components/admin-form";
 import ProductPublishAction from "./_components/ProductPublishAction";
+import ImageForm from "./_components/image-form";
 
 const ProductDetailsPage = async ({
   params,
@@ -57,7 +58,7 @@ const ProductDetailsPage = async ({
 
   const requiredFields = [
     product.title,
-    // product.imageUrl,
+    product.imageUrl,
     product.categoryId,
     product.rate,
   ];
@@ -106,7 +107,7 @@ const ProductDetailsPage = async ({
           </div>
 
           <TitleForm initialData={product} productId={product.id} />
-          {/* <ImageForm initialData={product} productId={product.id} /> */}
+          <ImageForm initialData={product} productId={product.id} />
           <ShortDescriptionForm
             initialData={product}
             productId={product.id}
