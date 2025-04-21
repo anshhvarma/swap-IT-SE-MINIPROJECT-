@@ -40,7 +40,7 @@ const guestRoutes = [
   {
     icons: User,
     label: "Saved Products",
-    href: "/savedproducts",
+    href: "/saved-products",
   },
 ];
 

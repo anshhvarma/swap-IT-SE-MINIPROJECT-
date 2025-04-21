@@ -11,14 +11,15 @@ const AdminDetailsPage = async () => {
     return redirect("/");
   }
 
-  const adminDetails = await db.admin.findMany({
-    where: {
-      userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  let adminDetails = [];
+
+try {
+  adminDetails = await db.admin.findMany({ where: { userId } });
+} catch (err) {
+  console.error("Failed to fetch admin details:", err);
+  return <div>Error connecting to the database. Please try again later.</div>;
+}
+
 
   if (adminDetails.length === 0) {
     return (

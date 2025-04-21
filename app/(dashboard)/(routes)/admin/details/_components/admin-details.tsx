@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Mail, Phone, MapPin, CalendarDays, Building } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ProductstabContentPage from "./product-content";
 
 interface AdminDetailContentPageProps {
   userId: string | null;
@@ -11,7 +12,7 @@ interface AdminDetailContentPageProps {
   products: Product[];
 }
 
-const AdminDetailContentPage = ({ admin, products }: AdminDetailContentPageProps) => {
+const AdminDetailContentPage = ({ admin, products, userId }: AdminDetailContentPageProps) => {
   const [activeTab, setActiveTab] = useState<"profile" | "products">("profile");
 
   const formatDate = (date: Date) => {
@@ -148,7 +149,10 @@ const AdminDetailContentPage = ({ admin, products }: AdminDetailContentPageProps
             </div>
           </div>
         ) : (
-          <div className="text-gray-600">Products</div>
+          <div className="text-gray-600">
+            <ProductstabContentPage products={products} userId={userId} />
+            
+          </div>
         )}
       </div>
     </div>

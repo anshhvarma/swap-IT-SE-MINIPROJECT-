@@ -38,10 +38,10 @@ const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
     try {
       setIsBookmarkLoading(true);
       if (isSavedByUser) {
-        await axios.patch(`/api/products/${product.id}/removeSavedProductToCollection`);
+        await axios.patch(`/api/product/${product.id}/unsavedProductfromCollection`);
         toast.success("Removed from collection");
       } else {
-        await axios.patch(`/api/products/${product.id}/savedProductToCollection`);
+        await axios.patch(`/api/product/${product.id}/savedProductToCollection`);
         toast.success("Saved to collection");
       }
       router.refresh();
@@ -112,11 +112,6 @@ const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                   <Tag className="w-12 h-12 text-gray-300" />
-                </div>
-              )}
-              {isSavedByUser && (
-                <div className="absolute top-2 right-2 bg-blue-600 text-white p-1 rounded-full">
-                  <BookmarkCheck className="w-3 h-3" />
                 </div>
               )}
             </div>
