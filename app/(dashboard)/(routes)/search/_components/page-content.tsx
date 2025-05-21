@@ -2,7 +2,6 @@
 
 import { Product } from "@prisma/client";
 import Image from "next/image";
-import NotFoundImage from "@/assets/404.png";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductCardItem from "./product-card-item";
 import { fadeInOut } from "@/animation";
@@ -16,12 +15,12 @@ const PageContents = ({ products, userId }: PageContentsProps) => {
     return (
       <div className="flex items-center justify-center flex-col">
         <div className="w-full h-[60vh] relative flex items-center justify-center">
-          {/* <Image
+          <Image
             fill
             alt="Not Found"
-            src={NotFoundImage}
+            src={"/assests/404.png"}
             className="w-full h-full object-contain"
-          /> */}
+          />
         </div>
         <h2 className="text-4xl font-semibold text-muted-foreground">
           No Products Found
@@ -35,7 +34,7 @@ const PageContents = ({ products, userId }: PageContentsProps) => {
         <motion.div
         {...fadeInOut}
           layout
-          className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 gap-2"
+          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"
         >
           {products.map((product) => (
             <ProductCardItem key={product.id} product={product} userId={userId}/>

@@ -2,18 +2,19 @@
 
 import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
-import { Card, CardDescription, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Bookmark,
   BookmarkCheck,
-  Currency,
   Loader2,
   MessageCircle,
-  Calendar,
-  Tag,
-  Shield,
+  Clock,
+  Tags,
+  BadgeCheck,
+  Share2,
+  Eye
 } from "lucide-react";
 import { cn, formattedString } from "@/lib/utils";
 import Image from "next/image";
@@ -30,6 +31,7 @@ interface ProductCardItemProps {
 
 const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
   const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const isSavedByUser = userId && product.savedUsers?.includes(userId);
   const SavedUserIcon = isSavedByUser ? BookmarkCheck : Bookmark;
   const router = useRouter();
@@ -61,6 +63,20 @@ const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
     }
   };
 
+  const handleShareClick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: product.title || "Check this product",
+        text: product.short_description || "I found this interesting product",
+        url: window.location.origin + `/products/${product.id}`,
+      }).catch((error) => console.log('Error sharing', error));
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(window.location.origin + `/products/${product.id}`);
+      toast.success("Link copied to clipboard");
+    }
+  };
+
   return (
     <motion.div
       layout
@@ -69,78 +85,104 @@ const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
       transition={{ duration: 0.4 }}
       className="w-full"
     >
-      <Card className="overflow-hidden w-[500px] h-full border border-gray-100 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 bg-white flex flex-col">
+      <Card 
+        className="overflow-hidden w-full max-w-md h-full border border-gray-100 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white flex flex-col"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className="relative">
-          <CardHeader className="p-3 pb-0 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
-            <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
-              <Calendar className="h-3 w-3" />
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+            <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-500 bg-opacity-90 text-white flex items-center gap-1">
+              <Clock className="h-3 w-3" />
               {formatDistanceToNow(new Date(product.createdAt), {
                 addSuffix: true,
               })}
-            </div>
-
+            </span>
+            
+            {product.tags && product.tags.length > 0 && (
+              <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-800 bg-opacity-70 text-white flex items-center gap-1">
+                <Tags className="h-3 w-3" />
+                {product.tags[0]}
+                {product.tags.length > 1 && `+${product.tags.length - 1}`}
+              </span>
+            )}
+          </div>
+          
+          <div className="absolute top-3 right-3 z-10">
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-full"
+              className="h-8 w-8 rounded-full bg-white bg-opacity-80 hover:bg-opacity-100 shadow-sm"
               onClick={onClickSaveProduct}
               disabled={isBookmarkLoading}
             >
               {isBookmarkLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
               ) : (
                 <SavedUserIcon
                   className={cn(
                     "w-4 h-4",
-                    isSavedByUser ? "text-blue-600" : "text-gray-400 hover:text-blue-600"
+                    isSavedByUser ? "text-blue-600" : "text-gray-500 hover:text-blue-600"
                   )}
                 />
               )}
             </Button>
-          </CardHeader>
+          </div>
 
-          <div className="w-full flex justify-center p-4 pt-2">
-            <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-50">
+          <div className="w-full overflow-hidden group">
+            <div className="relative w-full aspect-video bg-gray-50">
               {product.imageUrl ? (
                 <Image
                   alt={product.title || "Product image"}
                   src={product.imageUrl}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-contain p-2"
+                  className={cn(
+                    "object-cover transition-transform duration-500",
+                    isHovered && "scale-105"
+                  )}
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                  <Tag className="w-12 h-12 text-gray-300" />
+                  <Tags className="w-12 h-12 text-gray-300" />
                 </div>
               )}
+              
+              <div className={cn(
+                "absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition-opacity duration-300",
+                isHovered && "opacity-50"
+              )} />
             </div>
           </div>
         </div>
 
-        <CardContent className="flex-grow px-4 pt-0 pb-3">
-          {product.title && (
-            <h3 className="font-semibold text-base text-gray-800 mb-1 truncate">
-              {product.title}
+        <CardContent className="flex-grow px-5 pt-4 pb-3">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="font-bold text-lg text-gray-800 line-clamp-2">
+              {product.title || "Untitled Product"}
             </h3>
-          )}
-
-          {product.rate && (
-            <div className="flex items-center text-base font-bold text-blue-700 mb-2">
-              <Currency className="h-4 w-4 mr-1" />
-              ₹{formattedString(product.rate)}
-            </div>
-          )}
+            
+            {product.rate && (
+              <div className="flex items-center text-lg font-bold text-blue-600 ml-2">
+                <span>₹{formattedString(product.rate)}</span>
+              </div>
+            )}
+          </div>
 
           {product.short_description && (
-            <CardDescription className="text-xs text-gray-600 mb-3 line-clamp-2">
-              {truncate(product.short_description, { length: 100 })}
-            </CardDescription>
+            <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+              {truncate(product.short_description, { length: 120 })}
+            </p>
           )}
-
-          {product.tags?.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-2">
-              {product.tags.slice(0, 3).map((tag) => (
+          
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center text-xs text-gray-600">
+              <BadgeCheck className="h-4 w-4 mr-1 text-green-500" />
+              <span>Verified Seller</span>
+            </div>
+            
+            <div className="flex gap-1">
+              {product.tags?.slice(0, 2).map((tag) => (
                 <span
                   key={tag}
                   className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700"
@@ -148,29 +190,28 @@ const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
                   {tag}
                 </span>
               ))}
-              {product.tags.length > 3 && (
-                <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-700">
-                  +{product.tags.length - 3}
-                </span>
-              )}
             </div>
-          )}
-          
-          <div className="flex items-center text-xs text-gray-500 mb-2">
-            <Shield className="h-3 w-3 mr-1 text-green-500" />
-            <span>Verified Seller</span>
           </div>
         </CardContent>
 
-        <CardFooter className="px-4 pb-4 pt-0 flex flex-col gap-2 mt-auto">
-          <div className="grid grid-cols-2 gap-2 w-full">
+        <CardFooter className="px-5 pb-4 pt-0 flex flex-col gap-3 mt-auto">
+          <div className="grid grid-cols-3 gap-2 w-full">
             <Button
               variant="outline"
-              className="border-green-600 bg-white text-green-700 hover:bg-green-50 flex items-center justify-center gap-1 font-medium text-xs py-2"
+              className="border-green-500 bg-white text-green-600 hover:bg-green-50 flex items-center justify-center gap-1 font-medium text-xs py-2"
               onClick={handleContactClick}
             >
-              <MessageCircle className="w-3 h-3" />
+              <MessageCircle className="w-3.5 h-3.5" />
               WhatsApp
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="border-gray-300 bg-white text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1 font-medium text-xs py-2"
+              onClick={handleShareClick}
+            >
+              <Share2 className="w-3.5 h-3.5" />
+              Share
             </Button>
             
             <Button
@@ -178,23 +219,24 @@ const ProductCardItem = ({ product, userId }: ProductCardItemProps) => {
               className={cn(
                 "flex items-center justify-center gap-1 font-medium text-xs py-2",
                 isSavedByUser 
-                  ? "border-blue-600 bg-blue-50 text-blue-700 hover:bg-blue-100" 
+                  ? "border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100" 
                   : "border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
               )}
               onClick={onClickSaveProduct}
             >
-              <SavedUserIcon className="w-3 h-3" />
+              <SavedUserIcon className="w-3.5 h-3.5" />
               {isSavedByUser ? "Saved" : "Save"}
             </Button>
           </div>
           
-          <Button
+          {/* <Button
             variant="default"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm"
-            onClick={() => router.push(`/products/${product.id}`)}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm flex items-center justify-center gap-2"
+            onClick={() => router.push(`/search/${product.id}`)}
           >
+            <Eye className="w-4 h-4" />
             View Details
-          </Button>
+          </Button> */}
         </CardFooter>
       </Card>
     </motion.div>

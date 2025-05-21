@@ -29,7 +29,7 @@ const NavbarRoutes = () => {
             )}  
             <div className="flex gap-x-2 ml-auto">
                 {isAdminPage || isPlayerPage ? (
-                    <Link href={'/home'}>
+                    <Link href={'/'}>
                         <Button variant={"outline"} size={"sm"} className="border-black">
                             <LogOut />
                             Exit

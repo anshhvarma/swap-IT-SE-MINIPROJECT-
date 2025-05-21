@@ -32,7 +32,7 @@ const TagsForm = ({ initialData, productId }: TagsFormProps) => {
     defaultValues: initialData,
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {

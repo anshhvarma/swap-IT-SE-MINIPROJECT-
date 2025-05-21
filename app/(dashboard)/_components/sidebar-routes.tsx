@@ -5,7 +5,6 @@ import SidebarRouteItems from "./sidebar-route-items";
 import Box from "@/components/box";
 import { Separator } from "@/components/ui/separator";
 import DateFilter from "./date-filter";
-import CheckBoxContainer from "./check-box-container";
 import qs from "query-string";
 
 const adminRoutes = [
@@ -30,7 +29,7 @@ const guestRoutes = [
   {
     icons: Home,
     label: "Home",
-    href: "/home",
+    href: "/",
   },
   {
     icons: Compass,
@@ -55,67 +54,8 @@ const SidebarRoutes = () => {
   const isSearchPage = pathname?.startsWith("/search");
 
   const routes = isAdminPage ? adminRoutes : guestRoutes;
-  
-  const handleShiftTimingChange = (shiftTimings: FilterValue[]) => {
-    const currentQueryParams = qs.parseUrl(window.location.href).query;
-    const updatedQueryParams = {
-      ...currentQueryParams,
-      shiftTiming: shiftTimings,
-    };
-    const url = qs.stringifyUrl(
-      {
-        url: pathname || '',
-        query: updatedQueryParams,
-      },
-      {
-        skipNull: true,
-        skipEmptyString: true,
-      }
-    );
 
-    router.push(url);
-  };
 
-  const handleWorkingMode = (workingModes: FilterValue[]) => {
-    const currentQueryParams = qs.parseUrl(window.location.href).query;
-    const updatedQueryParams = {
-      ...currentQueryParams,
-      workMode: workingModes,
-    };
-    const url = qs.stringifyUrl(
-      {
-        url: pathname || '',
-        query: updatedQueryParams,
-      },
-      {
-        skipNull: true,
-        skipEmptyString: true,
-        arrayFormat: "comma",
-      }
-    );
-    router.push(url);
-  };
-
-  const handleExperience = (experiences: FilterValue[]) => {
-    const currentQueryParams = qs.parseUrl(window.location.href).query;
-    const updatedQueryParams = {
-      ...currentQueryParams,
-      yearsOfExperience: experiences,
-    };
-    
-    const url = qs.stringifyUrl(
-      {
-        url: pathname || '',
-        query: updatedQueryParams,
-      },
-      {
-        skipNull: true,
-        skipEmptyString: true,
-        arrayFormat: "comma",
-      }
-    );
-    router.push(url);
-  };
   
   return (
     <div className="flex flex-col w-full">

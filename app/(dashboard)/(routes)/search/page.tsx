@@ -2,6 +2,8 @@ import { getProducts } from '@/actions/get-products';
 import { auth } from '@clerk/nextjs/server';
 import React from 'react'
 import PageContents from './_components/page-content';
+import CategoryList from './_components/category-list';
+import { db } from '@/lib/db';
 
 interface SearchPageProps {
     searchParams:{
@@ -13,9 +15,15 @@ interface SearchPageProps {
 
 const SearchPage = async  ({searchParams}: SearchPageProps)=> {
 
+  const categories = await await db.category.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   const { userId } = await auth();
 
+  
     const products = await getProducts({...searchParams});
     
     console.log(products);
@@ -28,7 +36,7 @@ const SearchPage = async  ({searchParams}: SearchPageProps)=> {
 
     <div className="p-6">
       {/* categories */}
-      {/* <CategoryList categories={categories} /> */}
+      <CategoryList categories={categories} />
       {/* applied filters */}
 
       {/* page content */}

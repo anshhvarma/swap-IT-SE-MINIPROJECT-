@@ -7,7 +7,7 @@ const Logo = () => {
     height={60}
     width={60}
     alt="logo"
-    src="/icons/512-512.png"
+    src="/assests/512-512.png"
     />
     <h1>
         SWAP-IT

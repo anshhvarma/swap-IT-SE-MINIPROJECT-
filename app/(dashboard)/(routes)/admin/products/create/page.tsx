@@ -39,7 +39,7 @@ const ProductCreatePage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post('/api/product', values);
-      router.push(`/admin/product/${response.data.id}`);
+      router.push(`/admin/products/${response.data.id}`);
       toast.success("Product created successfully");
     } catch (error) {
       console.error((error as Error).message);
