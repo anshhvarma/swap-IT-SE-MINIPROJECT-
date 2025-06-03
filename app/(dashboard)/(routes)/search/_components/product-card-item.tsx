@@ -14,7 +14,6 @@ import {
   Tags,
   BadgeCheck,
   Share2,
-  Eye
 } from "lucide-react";
 import { cn, formattedString } from "@/lib/utils";
 import Image from "next/image";

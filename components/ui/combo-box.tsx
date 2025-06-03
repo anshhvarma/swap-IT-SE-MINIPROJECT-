@@ -35,11 +35,11 @@ export const Combobox = ({
     { label: string; value: string }[]
   >([]);
 
-  const handleSearchTerm = (e: any) => {
+  const handleSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setFiltered(
       options.filter((item) =>
-        item.label.toLowerCase().includes(searchTerm.toLowerCase())
+        item.label.toLowerCase().includes(e.target.value.toLowerCase())
       )
     );
   };
@@ -76,7 +76,7 @@ export const Combobox = ({
                 options.map((option) => (
                   <ListItem
                     key={option.value}
-                    category={option}
+                    category={{ id: option.value, label: option.label }}
                     onSelect={() => {
                       onChange(option.value === value ? "" : option.value);
                       setOpen(false);
@@ -88,7 +88,7 @@ export const Combobox = ({
                 filtered.map((option) => (
                   <ListItem
                     key={option.value}
-                    category={option}
+                    category={{ id: option.value, label: option.label }}
                     onSelect={() => {
                       onChange(option.value === value ? "" : option.value);
                       setOpen(false);

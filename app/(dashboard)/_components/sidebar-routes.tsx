@@ -1,11 +1,10 @@
 "use client";
 import { Compass, Home, List, User } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import SidebarRouteItems from "./sidebar-route-items";
 import Box from "@/components/box";
 import { Separator } from "@/components/ui/separator";
 import DateFilter from "./date-filter";
-import qs from "query-string";
 
 const adminRoutes = [
   {
@@ -44,11 +43,9 @@ const guestRoutes = [
 ];
 
 // Define proper types for filter values
-type FilterValue = string;
 
 const SidebarRoutes = () => {
   const pathname = usePathname();
-  const router = useRouter();
 
   const isAdminPage = pathname?.startsWith("/admin");
   const isSearchPage = pathname?.startsWith("/search");
